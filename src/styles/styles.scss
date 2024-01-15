@@ -1,2 +1,10 @@
+// Tipografías, variables, colores, reset
+@import './assets/tipografia';
+@import './assets/color';
+@import './assets/reset';
+
 // Componentes
-@import './components/navbar'
+@import './components/navbar';
+@import './components/item';
+@import './components/item-list';
+@import './components/item-detail';
