@@ -4,14 +4,12 @@ import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
-    <nav>
+    <nav className="navbar">
       <h3>Hombre Elegante</h3>
       <div>
-        <Button variant="contained">
-          <Link to={`/category/chaqueta`} variant="contained" color="primary">
-            Chaquetas
-          </Link>
-        </Button>
+        <Link to={`/category/chaqueta`} variant="contained" color="primary">
+          Chaquetas
+        </Link>
         <Link to={`/category/camisa`} variant="contained">
           Camisas
         </Link>
