@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { getProductsByCategory, getProducts } from "../../asyncMock";
 import ItemList from "../ItemList/ItemList";
 import { useParams } from "react-router-dom";
+// import { db } from "../../services/firebase/firebaseConfig";
+// import { getDocs, collection } from "firebase/firestore";}
 
 const ItemListContainer = ({ greeting }) => {
   // Estado que se encarga de almacenar los productos
@@ -10,6 +12,8 @@ const ItemListContainer = ({ greeting }) => {
   const { categoryId } = useParams();
 
   useEffect(() => {
+
+    
     const asyncFunc = categoryId ? getProductsByCategory : getProducts;
 
     asyncFunc(categoryId)
