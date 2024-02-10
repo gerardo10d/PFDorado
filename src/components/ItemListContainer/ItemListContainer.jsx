@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { getProductsByCategory, getProducts } from "../../asyncMock";
+// import { getProductsByCategory, getProducts } from "../../asyncMock";
 import ItemList from "../ItemList/ItemList";
 import { useParams } from "react-router-dom";
-// import { db } from "../../services/firebase/firebaseConfig";
-// import { getDocs, collection } from "firebase/firestore";}
+import { db } from "../../services/firebase/firebaseConfig";
+import { getDocs, collection, query, where } from "firebase/firestore";
 
 const ItemListContainer = ({ greeting }) => {
   // Estado que se encarga de almacenar los productos
@@ -12,17 +12,27 @@ const ItemListContainer = ({ greeting }) => {
   const { categoryId } = useParams();
 
   useEffect(() => {
+    const productsCollection = categoryId
+      ? query(collection(db, "products"), where('category', '==', categoryId))
+      : collection(db, "products");
 
-    
-    const asyncFunc = categoryId ? getProductsByCategory : getProducts;
-
-    asyncFunc(categoryId)
-      .then((response) => {
-        setProducts(response);
-      })
-      .catch((error) => {
-        console.error(error);
+    getDocs(productsCollection).then((querySnapshot) => {
+      const productsAdapted = querySnapshot.docs.map((doc) => {
+        const fields = doc.data();
+        return { id: doc.id, ...fields };
       });
+      setProducts(productsAdapted);
+    });
+
+    // const asyncFunc = categoryId ? getProductsByCategory : getProducts;
+
+    // asyncFunc(categoryId)
+    //   .then((response) => {
+    //     setProducts(response);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
   }, [categoryId]);
 
   return (

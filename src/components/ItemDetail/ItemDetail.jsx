@@ -1,54 +1,54 @@
-import { useContext, useState } from "react";
-import ItemCount from "../ItemCount/ItemCount";
-import { Link } from 'react-router-dom';
-import { CartContext } from "../../context/CartContext";
+import { useState  } from 'react'
+import { Link } from 'react-router-dom'
+import ItemCount from '../ItemCount/ItemCount'
+import { useCart } from '../../context/CartContext'
 
-const ItemDetail = ({ id, name, img, category, description, price, stock }) => {
-  const [quantityAdded, setQuantityAdded] = useState(0);
+const ItemDetail = ({ id, name, category, img, price, stock, description }) => {
+    const [quantity, setQuantity] = useState(0)
 
-  const { addItem } = useContext(CartContext)
+    const { addItem } = useCart()
 
-  const handleOnAdd = (quantity) => {
-    setQuantityAdded(quantity);
-
-    const item = {
-      id, name, price
+    const handleOnAdd = (quantity) => {
+        const objProductToAdd = {
+            id, name, price, quantity
+        }
+        addItem(objProductToAdd)
+        
+        setQuantity(quantity)
     }
 
-    addItem(item, quantity)
-  };
+    return (
+        <article className='item-detail'>
+            <header>
+                <h2>
+                    {name}
+                </h2>
+            </header>
+            <picture>
+                <img src={img} alt={name} />
+            </picture>
+            <section>
+                <p>
+                    Categoria: {category}
+                </p>
+                <p>
+                    Descripción: {description}
+                </p>
+                <p>
+                    Precio: {price}
+                </p>
+            </section>           
+            <footer>
+                {
+                    quantity === 0 ? (
+                        <ItemCount onAdd={handleOnAdd} stock={stock}/>
+                    ) : (
+                        <Link to='/cart'>Finalizar compra</Link>
+                    )
+                }
+            </footer>
+        </article>
+    )
+}
 
-  return (
-    <article className="item-detail">
-      <header>
-        <h2>{name}</h2>
-      </header>
-
-      <picture>
-        <img src={img} alt={name} />
-      </picture>
-
-      <section>
-        <p>Categoria: {category}</p>
-
-        <p>Descripción: {description}</p>
-
-        <p>Precio: ${price}</p>
-      </section>
-
-      <footer>
-        {quantityAdded > 0 ? (
-          <Link to="/cart">Terminar compra</Link>
-        ) : (
-          <ItemCount
-            initial={1}
-            stock={stock}
-            onAdd={handleOnAdd}
-          />
-        )}
-      </footer>
-    </article>
-  );
-};
-
-export default ItemDetail;
+export default ItemDetail
